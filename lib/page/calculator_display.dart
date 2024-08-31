@@ -67,32 +67,32 @@ class _CalculatorState extends State<Calculator> {
           ),
           child: Column(
             children: [
-              Center(
+              const Center(
                 child: Text(
                   "Calculator",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30.0),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20.0,
               ),
               CalculatorDisplay(
                 hint: "Enter first number...",
                 controller: numberOneController,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15.0,
               ),
               CalculatorDisplay(
                 hint: "Enter second number...",
                 controller: numberTwoController,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20.0,
               ),
               Text(
                 result.toString(),
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 50.0,
                   fontWeight: FontWeight.bold,
                 ),
@@ -109,7 +109,7 @@ class _CalculatorState extends State<Calculator> {
                               num.tryParse(numberTwoController.text)!;
                         });
                       },
-                      child: Icon(CupertinoIcons.add),
+                      child: const Icon(CupertinoIcons.add),
                     ),
                     FloatingActionButton(
                       onPressed: () {
@@ -118,7 +118,7 @@ class _CalculatorState extends State<Calculator> {
                               num.tryParse(numberTwoController.text)!;
                         });
                       },
-                      child: Icon(CupertinoIcons.minus),
+                      child: const Icon(CupertinoIcons.minus),
                     ),
                     FloatingActionButton(
                       onPressed: () {
@@ -127,7 +127,7 @@ class _CalculatorState extends State<Calculator> {
                               num.tryParse(numberTwoController.text)!;
                         });
                       },
-                      child: Icon(CupertinoIcons.multiply),
+                      child: const Icon(CupertinoIcons.multiply),
                     ),
                     FloatingActionButton(
                       onPressed: () {
@@ -136,12 +136,12 @@ class _CalculatorState extends State<Calculator> {
                               num.tryParse(numberTwoController.text)!;
                         });
                       },
-                      child: Icon(CupertinoIcons.divide),
+                      child: const Icon(CupertinoIcons.divide),
                     ),
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20.0,
               ),
               FloatingActionButton.extended(
@@ -155,7 +155,7 @@ class _CalculatorState extends State<Calculator> {
                   });
                 },
                 backgroundColor: Colors.red,
-                label: Text(
+                label: const Text(
                   "Clear",
                   style: TextStyle(
                     fontSize: 20.0,
@@ -201,7 +201,7 @@ class CalculatorDisplay extends StatelessWidget {
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: Colors.black,
             width: 3.0,
           ),
