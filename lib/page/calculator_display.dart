@@ -9,51 +9,159 @@ class Calculator extends StatefulWidget {
 }
 
 class _CalculatorState extends State<Calculator> {
+  int num1 = 0;
+  int num2 = 0;
+  num result = 0;
+
+  final numberOneController = TextEditingController();
+  final numberTwoController = TextEditingController();
+  late final AppLifecycleListener _listener;
+
+  @override
+  void initState() {
+    super.initState();
+    numberOneController.text = num1.toString();
+    numberTwoController.text = num2.toString();
+
+    _listener = AppLifecycleListener(
+      onResume: _onResume,
+      onInactive: _onInactive,
+      onHide: _onHide,
+      onShow: _onShow,
+      onPause: _onPause,
+      onRestart: _onRestart,
+      onDetach: _onDetach,
+      onStateChange: _onStateChange,
+    );
+  }
+
+  void _onResume() => print("onResume called");
+  void _onInactive() => print("onInactive called");
+  void _onHide() => print("onHide called");
+  void _onShow() => print("onShow called");
+  void _onPause() => print("onPause called");
+  void _onRestart() => print("onRestart called");
+  void _onDetach() => print("onDetach called");
+  void _onStateChange(AppLifecycleState) {
+    print("onStateChange called");
+  }
+
+  @override
+  void dispose() {
+    numberOneController.dispose();
+    numberTwoController.dispose();
+    _listener.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.orange,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.only(
+            top: 50.0,
+            left: 20.0,
+            right: 20.0,
+          ),
           child: Column(
             children: [
+              Center(
+                child: Text(
+                  "Calculator",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30.0),
+                ),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
               CalculatorDisplay(
                 hint: "Enter first number...",
+                controller: numberOneController,
               ),
               SizedBox(
                 height: 15.0,
               ),
               CalculatorDisplay(
                 hint: "Enter second number...",
+                controller: numberTwoController,
+              ),
+              SizedBox(
+                height: 20.0,
               ),
               Text(
-                "0",
+                result.toString(),
                 style: TextStyle(
                   fontSize: 50.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  FloatingActionButton(
-                    onPressed: () {},
-                    child: Icon(CupertinoIcons.add),
+              Padding(
+                padding: const EdgeInsets.only(top: 150.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    FloatingActionButton(
+                      onPressed: () {
+                        setState(() {
+                          result = num.tryParse(numberOneController.text)! +
+                              num.tryParse(numberTwoController.text)!;
+                        });
+                      },
+                      child: Icon(CupertinoIcons.add),
+                    ),
+                    FloatingActionButton(
+                      onPressed: () {
+                        setState(() {
+                          result = num.tryParse(numberOneController.text)! -
+                              num.tryParse(numberTwoController.text)!;
+                        });
+                      },
+                      child: Icon(CupertinoIcons.minus),
+                    ),
+                    FloatingActionButton(
+                      onPressed: () {
+                        setState(() {
+                          result = num.tryParse(numberOneController.text)! *
+                              num.tryParse(numberTwoController.text)!;
+                        });
+                      },
+                      child: Icon(CupertinoIcons.multiply),
+                    ),
+                    FloatingActionButton(
+                      onPressed: () {
+                        setState(() {
+                          result = num.tryParse(numberOneController.text)! /
+                              num.tryParse(numberTwoController.text)!;
+                        });
+                      },
+                      child: Icon(CupertinoIcons.divide),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              FloatingActionButton.extended(
+                onPressed: () {
+                  setState(() {
+                    num1 = 0;
+                    num2 = 0;
+                    result = 0;
+                    numberOneController.clear();
+                    numberTwoController.clear();
+                  });
+                },
+                backgroundColor: Colors.red,
+                label: Text(
+                  "Clear",
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
                   ),
-                  FloatingActionButton(
-                    onPressed: () {},
-                    child: Icon(CupertinoIcons.minus),
-                  ),
-                  FloatingActionButton(
-                    onPressed: () {},
-                    child: Icon(CupertinoIcons.multiply),
-                  ),
-                  FloatingActionButton(
-                    onPressed: () {},
-                    child: Icon(CupertinoIcons.divide),
-                  ),
-                ],
+                ),
               )
             ],
           ),
@@ -64,13 +172,16 @@ class _CalculatorState extends State<Calculator> {
 }
 
 class CalculatorDisplay extends StatelessWidget {
-  const CalculatorDisplay({super.key, this.hint = "Enter a number..."});
+  const CalculatorDisplay(
+      {super.key, this.hint = "Enter a number...", required this.controller});
 
   final String? hint;
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
       keyboardType: TextInputType.number,
       autofocus: true,
       decoration: InputDecoration(
